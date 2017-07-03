@@ -29,6 +29,15 @@ std::unique_ptr<LegMotionBase> JointTrajectory::clone() const
   return pointer;
 }
 
+void JointTrajectory::setTrajectory(
+    const std::unordered_map<ControlLevel, std::vector<Time>, EnumClassHash> times,
+    const std::unordered_map<ControlLevel, std::vector<std::vector<ValueType>>, EnumClassHash> values)
+{
+  times_ = times;
+  values_ = values;
+  for (const auto& value : values) controlSetup_[value.first] = true;
+}
+
 const ControlSetup JointTrajectory::getControlSetup() const
 {
   return controlSetup_;
@@ -167,6 +176,11 @@ const JointEffortsLeg JointTrajectory::evaluateEffort(const double time) const
     trajectories[i].evaluate(jointEfforts(i), time);
   }
   return jointEfforts;
+}
+
+void JointTrajectory::setIgnoreContact(const bool ignoreContact)
+{
+  ignoreContact_ = ignoreContact;
 }
 
 bool JointTrajectory::isIgnoreContact() const

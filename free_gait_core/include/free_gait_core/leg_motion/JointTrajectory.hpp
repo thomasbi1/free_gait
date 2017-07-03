@@ -39,6 +39,10 @@ class JointTrajectory : public JointMotionBase
    */
   std::unique_ptr<LegMotionBase> clone() const;
 
+  void setTrajectory(
+      const std::unordered_map<ControlLevel, std::vector<Time>, EnumClassHash> times,
+      const std::unordered_map<ControlLevel, std::vector<std::vector<ValueType>>, EnumClassHash> values);
+
   const ControlSetup getControlSetup() const;
 
   /*!
@@ -73,6 +77,7 @@ class JointTrajectory : public JointMotionBase
   const JointAccelerationsLeg evaluateAcceleration(const double time) const;
   const JointEffortsLeg evaluateEffort(const double time) const;
 
+  void setIgnoreContact(const bool ignoreContact);
   bool isIgnoreContact() const;
 
   /*!
